@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="uk" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Олена Колкова — Психологиня</title>
+  <meta name="description" content="Індивідуальні психологічні консультації онлайн: тривожність, вигорання, стосунки, самооцінка. Простір без осуду, у вашому темпі." />
+
+  <!-- Фавікон (лист — символ спокою та природи, легко замінити на власний) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>" />
+
+  <!-- ==========================================================================
+       Google Fonts: Fraunces (заголовки) + Inter (основний текст)
+       Fraunces — теплий, "гуманістичний" серифний шрифт, що додає сторінці
+       відчуття спокою та довіри, без офіційної "корпоративної" суворості.
+  ========================================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ==========================================================================
+       Tailwind CSS через CDN — швидкий старт без збірки проєкту.
+       Для продакшену з великим трафіком можна пізніше перейти на Tailwind CLI.
+  ========================================================================== -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Розширюємо стандартну палітру Tailwind власними кольорами та шрифтами.
+    // Завдяки цьому в розмітці можна писати bg-cream, text-graphite, bg-terracotta тощо.
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FDFCF0',       // основний фон (тепла слонова кістка)
+            mist: '#E3E8E3',        // додатковий фон (приглушена шавлія)
+            graphite: '#333A36',    // основний текст (темний лісовий графіт)
+            moss: '#A3B8A8',        // акценти (димчастий зелений)
+            terracotta: '#C57B57',  // кнопки/CTA (тепла теракота)
+          },
+          fontFamily: {
+            display: ['Fraunces', 'serif'],
+            body: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- AOS.js — бібліотека для анімації появи блоків при скролі -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+  <!-- Кастомні стилі проєкту -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="bg-cream text-graphite font-body antialiased">
+
+  <!-- Посилання для зручності клавіатурної навігації (accessibility) -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-terracotta focus:text-cream focus:px-4 focus:py-2 focus:rounded-full">
+    Перейти до основного змісту
+  </a>
+
+  <!-- ==========================================================================
+       HEADER
+       Фіксується зверху при скролі та отримує ефект glassmorphism
+       (напівпрозорий фон + розмиття) через клас .header-scrolled із style.css.
+  ========================================================================== -->
+  <header id="site-header" class="fixed top-0 left-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+
+        <!-- Логотип / Ім'я -->
+        <a href="#hero" class="font-display text-xl sm:text-2xl font-medium text-graphite">
+          Олена Колкова
+          <span class="block text-[11px] font-body font-normal tracking-wide text-graphite/60 -mt-1">психологиня</span>
+        </a>
+
+        <!-- Навігація для десктопу -->
+        <nav class="hidden md:flex items-center gap-8" aria-label="Основна навігація">
+          <a href="#about" class="text-sm font-medium text-graphite/80 hover:text-terracotta transition-colors">Про мене</a>
+          <a href="#services" class="text-sm font-medium text-graphite/80 hover:text-terracotta transition-colors">З чим я працюю</a>
+          <a href="#pricing" class="text-sm font-medium text-graphite/80 hover:text-terracotta transition-colors">Формат і вартість</a>
+          <a href="#contact" class="text-sm font-medium text-graphite/80 hover:text-terracotta transition-colors">Контакти</a>
+          <a href="#contact" class="inline-flex items-center gap-2 bg-terracotta text-cream text-sm font-medium px-5 py-2.5 rounded-full hover:bg-graphite transition-colors">
+            Записатися
+          </a>
+        </nav>
+
+        <!-- Кнопка гамбургер-меню (тільки мобільні) -->
+        <button
+          id="mobile-menu-button"
+          class="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full hover:bg-mist/70 transition-colors"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Відкрити меню"
+        >
+          <i data-lucide="menu" id="icon-menu-open" class="w-6 h-6 text-graphite"></i>
+          <i data-lucide="x" id="icon-menu-close" class="w-6 h-6 text-graphite hidden"></i>
+        </button>
+      </div>
+
+      <!-- Мобільне меню (за замовчуванням приховане) -->
+      <nav id="mobile-menu" class="md:hidden hidden flex-col gap-1 pb-6" aria-label="Мобільна навігація">
+        <a href="#about" class="px-4 py-3 rounded-xl text-graphite/80 hover:bg-mist/70 hover:text-terracotta transition-colors">Про мене</a>
+        <a href="#services" class="px-4 py-3 rounded-xl text-graphite/80 hover:bg-mist/70 hover:text-terracotta transition-colors">З чим я працюю</a>
+        <a href="#pricing" class="px-4 py-3 rounded-xl text-graphite/80 hover:bg-mist/70 hover:text-terracotta transition-colors">Формат і вартість</a>
+        <a href="#contact" class="px-4 py-3 rounded-xl bg-terracotta text-cream text-center font-medium mt-2">Записатися на консультацію</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ==========================================================================
+         HERO
+    ========================================================================== -->
+    <section id="hero" class="relative pt-40 pb-24 lg:pt-48 lg:pb-32 overflow-hidden">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+          <!-- Текстова частина -->
+          <div data-aos="fade-up">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-terracotta mb-5">
+              Психологічна підтримка онлайн
+            </span>
+            <h1 class="font-display text-4xl sm:text-5xl lg:text-[3.4rem] leading-[1.1] font-medium text-graphite mb-6">
+              Повернутися до <span class="italic text-moss">себе</span> —
+              крок за кроком
+            </h1>
+            <p class="text-lg text-graphite/75 leading-relaxed mb-8 max-w-lg">
+              Індивідуальні консультації для дорослих, які проживають тривожність,
+              вигорання чи складнощі у стосунках. Простір без осуду, у вашому темпі.
+            </p>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <a
+                href="#contact"
+                class="inline-flex items-center justify-center gap-2 bg-terracotta text-cream font-medium px-7 py-3.5 rounded-full hover:bg-graphite transition-colors shadow-lg shadow-terracotta/20"
+              >
+                Записатися на консультацію
+              </a>
+              <span class="text-sm text-graphite/60">
+                Перша розмова — знайомство, без зобов'язань.
+              </span>
+            </div>
+          </div>
+
+          <!-- Фото психолога -->
+          <div class="relative flex justify-center lg:justify-end" data-aos="fade-left" data-aos-delay="150">
+            <div class="relative w-full max-w-sm">
+              <!-- Сигнатурний елемент дизайну: м'яке "дихаюче" коло символізує спокій -->
+              <div class="breathing-circle" aria-hidden="true"></div>
+
+              
+                <img src="img/ava.jpg" alt="Олена Колкова, психологиня" class="organic-frame relative z-10 w-full aspect-[4/5] object-cover">
+             
+              <!-- <div class="organic-frame relative z-10 w-full aspect-[4/5] bg-gradient-to-br from-mist to-moss/30 flex items-center justify-center">
+                <i data-lucide="user-round" class="w-20 h-20 text-graphite/25"></i>
+              </div> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         ПРО МЕНЕ
+    ========================================================================== -->
+    <section id="about" class="bg-mist/60 py-24">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-12 gap-12">
+
+          <div class="lg:col-span-5" data-aos="fade-up">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-terracotta mb-4">Про мене</span>
+            <h2 class="font-display text-3xl sm:text-4xl font-medium text-graphite leading-tight">
+              Психологиня, яка теж вчиться і зростає
+            </h2>
+          </div>
+
+          <div class="lg:col-span-7 space-y-5 text-graphite/80 leading-relaxed" data-aos="fade-up" data-aos-delay="100">
+            <p>
+              Мене звати Олена, і я — практикуюча психологиня. Я почала цей шлях,
+              бо вірю: розмова з людиною, яка вміє слухати без оцінки, здатна
+              змінити те, як ми проживаємо власне життя.
+            </p>
+            <p>
+              У роботі спираюсь на когнітивно-поведінковий та особистісно-орієнтований
+              підходи. Регулярно проходжу супервізію та продовжую навчання — це
+              означає, що кожна сесія спирається не лише на емпатію, а й на практику,
+              підкріплену знаннями.
+            </p>
+
+            <!-- Короткі "credentials" -->
+            <div class="grid sm:grid-cols-3 gap-4 pt-4">
+              <div class="flex items-start gap-3">
+                <i data-lucide="graduation-cap" class="w-5 h-5 text-moss shrink-0 mt-0.5"></i>
+                <span class="text-sm">Психологиня, УКУ</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <i data-lucide="shield-check" class="w-5 h-5 text-moss shrink-0 mt-0.5"></i>
+                <span class="text-sm">Щотижнева супервізія</span>
+              </div>
+              <div class="flex items-start gap-3">
+                <i data-lucide="brain" class="w-5 h-5 text-moss shrink-0 mt-0.5"></i>
+                <span class="text-sm">КПТ + особистісно-орієнтований підхід</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         З ЧИМ Я ПРАЦЮЮ
+    ========================================================================== -->
+    <section id="services" class="py-24">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="max-w-xl mb-14" data-aos="fade-up">
+          <span class="inline-block text-xs font-semibold tracking-widest uppercase text-terracotta mb-4">З чим я працюю</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-medium text-graphite leading-tight">
+            Запити, з якими найчастіше приходять
+          </h2>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          <!-- Картка 1 -->
+          <article
+            class="group bg-cream border border-moss/25 rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-graphite/5"
+            data-aos="fade-up"
+          >
+            <div class="w-12 h-12 rounded-full bg-moss/15 flex items-center justify-center mb-5 group-hover:bg-terracotta/15 transition-colors">
+              <i data-lucide="wind" class="w-6 h-6 text-moss group-hover:text-terracotta transition-colors"></i>
+            </div>
+            <h3 class="font-display text-lg font-medium mb-2">Тривожність</h3>
+            <p class="text-sm text-graphite/70 leading-relaxed">Постійне занепокоєння, тривожні думки, панічні атаки.</p>
+          </article>
+
+          <!-- Картка 2 -->
+          <article
+            class="group bg-cream border border-moss/25 rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-graphite/5"
+            data-aos="fade-up"
+            data-aos-delay="80"
+          >
+            <div class="w-12 h-12 rounded-full bg-moss/15 flex items-center justify-center mb-5 group-hover:bg-terracotta/15 transition-colors">
+              <i data-lucide="battery-low" class="w-6 h-6 text-moss group-hover:text-terracotta transition-colors"></i>
+            </div>
+            <h3 class="font-display text-lg font-medium mb-2">Вигорання</h3>
+            <p class="text-sm text-graphite/70 leading-relaxed">Виснаження від роботи чи навчання, втрата мотивації.</p>
+          </article>
+
+          <!-- Картка 3 -->
+          <article
+            class="group bg-cream border border-moss/25 rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-graphite/5"
+            data-aos="fade-up"
+            data-aos-delay="160"
+          >
+            <div class="w-12 h-12 rounded-full bg-moss/15 flex items-center justify-center mb-5 group-hover:bg-terracotta/15 transition-colors">
+              <i data-lucide="heart-handshake" class="w-6 h-6 text-moss group-hover:text-terracotta transition-colors"></i>
+            </div>
+            <h3 class="font-display text-lg font-medium mb-2">Стосунки</h3>
+            <p class="text-sm text-graphite/70 leading-relaxed">Складнощі в парі, родині чи спілкуванні з близькими.</p>
+          </article>
+
+          <!-- Картка 4 -->
+          <article
+            class="group bg-cream border border-moss/25 rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-graphite/5"
+            data-aos="fade-up"
+          >
+            <div class="w-12 h-12 rounded-full bg-moss/15 flex items-center justify-center mb-5 group-hover:bg-terracotta/15 transition-colors">
+              <i data-lucide="gem" class="w-6 h-6 text-moss group-hover:text-terracotta transition-colors"></i>
+            </div>
+            <h3 class="font-display text-lg font-medium mb-2">Самооцінка</h3>
+            <p class="text-sm text-graphite/70 leading-relaxed">Невпевненість у собі, самокритика, синдром самозванця.</p>
+          </article>
+
+          <!-- Картка 5 -->
+          <article
+            class="group bg-cream border border-moss/25 rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-graphite/5"
+            data-aos="fade-up"
+            data-aos-delay="80"
+          >
+            <div class="w-12 h-12 rounded-full bg-moss/15 flex items-center justify-center mb-5 group-hover:bg-terracotta/15 transition-colors">
+              <i data-lucide="cloud-lightning" class="w-6 h-6 text-moss group-hover:text-terracotta transition-colors"></i>
+            </div>
+            <h3 class="font-display text-lg font-medium mb-2">Стрес і кризи</h3>
+            <p class="text-sm text-graphite/70 leading-relaxed">Складні життєві переходи, втрати, кризові стани.</p>
+          </article>
+
+          <!-- Картка 6 -->
+          <article
+            class="group bg-cream border border-moss/25 rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-graphite/5"
+            data-aos="fade-up"
+            data-aos-delay="160"
+          >
+            <div class="w-12 h-12 rounded-full bg-moss/15 flex items-center justify-center mb-5 group-hover:bg-terracotta/15 transition-colors">
+              <i data-lucide="compass" class="w-6 h-6 text-moss group-hover:text-terracotta transition-colors"></i>
+            </div>
+            <h3 class="font-display text-lg font-medium mb-2">Самопізнання</h3>
+            <p class="text-sm text-graphite/70 leading-relaxed">Пошук себе, своїх цінностей і напрямку в житті.</p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         ФОРМАТ І ВАРТІСТЬ
+    ========================================================================== -->
+    <section id="pricing" class="bg-mist/60 py-24">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+
+        <div class="max-w-xl mb-14" data-aos="fade-up">
+          <span class="inline-block text-xs font-semibold tracking-widest uppercase text-terracotta mb-4">Формат і вартість</span>
+          <h2 class="font-display text-3xl sm:text-4xl font-medium text-graphite leading-tight">
+            Просто і прозоро
+          </h2>
+        </div>
+
+        <!-- Короткі інфо-блоки: тривалість / формат / періодичність -->
+        <div class="grid sm:grid-cols-3 gap-6 mb-12">
+          <div class="bg-cream rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up">
+            <i data-lucide="clock" class="w-6 h-6 text-terracotta shrink-0"></i>
+            <div>
+              <p class="text-sm text-graphite/60">Тривалість сесії</p>
+              <p class="font-medium">50 хвилин</p>
+            </div>
+          </div>
+          <div class="bg-cream rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="80">
+            <i data-lucide="video" class="w-6 h-6 text-terracotta shrink-0"></i>
+            <div>
+              <p class="text-sm text-graphite/60">Формат</p>
+              <p class="font-medium">Офлайн (кабінет) або Онлайн (Google Meet)</p>
+            </div>
+          </div>
+          <div class="bg-cream rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="160">
+            <i data-lucide="repeat" class="w-6 h-6 text-terracotta shrink-0"></i>
+            <div>
+              <p class="text-sm text-graphite/60">Періодичність</p>
+              <p class="font-medium">1 раз на тиждень</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Тарифні картки -->
+        <div class="grid sm:grid-cols-2 gap-6 max-w-3xl">
+          <!-- Разова консультація -->
+          <div class="bg-cream rounded-2xl p-8 border border-moss/25" data-aos="fade-up">
+            <i data-lucide="wallet" class="w-6 h-6 text-moss mb-4"></i>
+            <h3 class="font-display text-xl font-medium mb-1">Разова консультація</h3>
+            <p class="text-sm text-graphite/60 mb-5">Знайомство або окремий запит</p>
+            <!-- Ціна орієнтовна — замініть на власну -->
+            <p class="font-display text-3xl font-medium mb-6">600 <span class="text-lg text-graphite/50">грн</span></p>
+            <a href="#contact" class="block text-center bg-mist text-graphite font-medium py-3 rounded-full hover:bg-graphite hover:text-cream transition-colors">
+              Записатися
+            </a>
+          </div>
+
+          <!-- Пакет 4 сесій -->
+          <div class="bg-graphite text-cream rounded-2xl p-8 relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+            <span class="absolute top-6 right-6 text-[11px] font-semibold uppercase tracking-wide bg-terracotta text-cream px-3 py-1 rounded-full">Вигідніше</span>
+            <i data-lucide="wallet" class="w-6 h-6 text-moss mb-4"></i>
+            <h3 class="font-display text-xl font-medium mb-1">Пакет 4 сесій</h3>
+            <p class="text-sm text-cream/60 mb-5">Для системної роботи над запитом</p>
+            <!-- Ціна орієнтовна — замініть на власну -->
+            <p class="font-display text-3xl font-medium mb-6">2 000 <span class="text-lg text-cream/50">грн</span></p>
+            <a href="#contact" class="block text-center bg-terracotta text-cream font-medium py-3 rounded-full hover:bg-moss hover:text-graphite transition-colors">
+              Записатися
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         КОНТАКТИ / ФОРМА
+    ========================================================================== -->
+    <section id="contact" class="py-24">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-12 gap-12">
+
+          <!-- Ліва колонка: текст і прямі контакти -->
+          <div class="lg:col-span-5" data-aos="fade-up">
+            <span class="inline-block text-xs font-semibold tracking-widest uppercase text-terracotta mb-4">Контакти</span>
+            <h2 class="font-display text-3xl sm:text-4xl font-medium text-graphite leading-tight mb-5">
+              Зробити перший крок
+            </h2>
+            <p class="text-graphite/75 leading-relaxed mb-8 max-w-sm">
+              Залиште заявку — і я напишу вам протягом дня, щоб узгодити зручний
+              час консультації. Або напишіть напряму:
+            </p>
+
+            <div class="space-y-4">
+              <a href="https://t.me/lenalow_2006" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
+                <span class="w-11 h-11 rounded-full bg-moss/15 flex items-center justify-center group-hover:bg-terracotta/15 transition-colors">
+                  <svg class="w-5 h-5 text-moss group-hover:text-terracotta transition-colors" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M22.05 3.24 2.87 10.7c-1.24.5-1.23 1.2-.23 1.5l4.9 1.53 1.9 5.9c.24.66.4.9.8.9.3 0 .45-.14.65-.33l1.9-1.83 4.05 2.98c.75.4 1.28.2 1.47-.7l2.66-12.5c.27-1.1-.4-1.6-1.17-1.3ZM9.8 14.4l-.9 3.2-1-3.4 9.4-6.9c.3-.2.6.1.35.35Z"/>
+                  </svg>
+                </span>
+                <span class="text-sm font-medium">@lenalow_2006</span>
+              </a>
+
+              <a href="https://instagram.com/lenalow_2006" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 group">
+                <span class="w-11 h-11 rounded-full bg-moss/15 flex items-center justify-center group-hover:bg-terracotta/15 transition-colors">
+                  <svg class="w-5 h-5 text-moss group-hover:text-terracotta transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect>
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <circle cx="17.5" cy="6.5" r=".5" fill="currentColor"></circle>
+                  </svg>
+                </span>
+                <span class="text-sm font-medium">@lenalow_2006</span>
+              </a>
+
+              <a href="mailto:likovvana777@gmail.com" class="flex items-center gap-3 group">
+                <span class="w-11 h-11 rounded-full bg-moss/15 flex items-center justify-center group-hover:bg-terracotta/15 transition-colors">
+                  <i data-lucide="mail" class="w-5 h-5 text-moss group-hover:text-terracotta transition-colors"></i>
+                </span>
+                <span class="text-sm font-medium">likovvana777@gmail.com</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Права колонка: форма -->
+          <div class="lg:col-span-7" data-aos="fade-up" data-aos-delay="100">
+            <form id="contact-form" class="bg-mist/60 rounded-2xl p-8 sm:p-10 space-y-5" novalidate>
+
+              <div>
+                <label for="name" class="block text-sm font-medium mb-2">Ім'я</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  minlength="2"
+                  placeholder="Як до вас звертатися?"
+                  class="w-full bg-cream border border-moss/30 rounded-xl px-4 py-3 text-graphite placeholder:text-graphite/40 focus:outline-none focus:border-terracotta transition-colors"
+                />
+              </div>
+
+              <div>
+                <label for="contact" class="block text-sm font-medium mb-2">Telegram або телефон</label>
+                <input
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  required
+                  minlength="3"
+                  placeholder="@nickname або +380..."
+                  class="w-full bg-cream border border-moss/30 rounded-xl px-4 py-3 text-graphite placeholder:text-graphite/40 focus:outline-none focus:border-terracotta transition-colors"
+                />
+              </div>
+
+              <div>
+                <label for="message" class="block text-sm font-medium mb-2">Коротко про ваш запит</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  placeholder="Необов'язково, але це допоможе мені підготуватися до розмови"
+                  class="w-full bg-cream border border-moss/30 rounded-xl px-4 py-3 text-graphite placeholder:text-graphite/40 focus:outline-none focus:border-terracotta transition-colors resize-none"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                id="submit-button"
+                class="w-full inline-flex items-center justify-center gap-2 bg-terracotta text-cream font-medium px-7 py-3.5 rounded-full hover:bg-graphite transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span id="submit-button-text">Надіслати</span>
+              </button>
+
+              <!-- Повідомлення про статус відправки (успіх/помилка) -->
+              <p id="form-status-message" class="text-sm text-center hidden" role="status" aria-live="polite"></p>
+
+              <p class="text-xs text-graphite/50 text-center">
+                Надсилаючи форму, ви погоджуєтесь, що я звʼяжусь з вами для уточнення деталей консультації.
+              </p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER
+  ========================================================================== -->
+  <footer class="bg-graphite text-cream">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 py-14">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 mb-10">
+
+        <div>
+          <p class="font-display text-xl font-medium mb-2">Олена Колкова</p>
+          <p class="text-sm text-cream/60 leading-relaxed max-w-xs">
+            Психологічна підтримка онлайн для тих, хто хоче краще розуміти себе
+            та свої стосунки зі світом.
+          </p>
+        </div>
+
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-cream/50 mb-4">Навігація</p>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#about" class="text-cream/70 hover:text-terracotta transition-colors">Про мене</a></li>
+            <li><a href="#services" class="text-cream/70 hover:text-terracotta transition-colors">З чим я працюю</a></li>
+            <li><a href="#pricing" class="text-cream/70 hover:text-terracotta transition-colors">Формат і вартість</a></li>
+            <li><a href="#contact" class="text-cream/70 hover:text-terracotta transition-colors">Контакти</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="text-sm font-semibold uppercase tracking-wide text-cream/50 mb-4">Звʼязок</p>
+          <div class="flex gap-3">
+            <a href="https://t.me/@lenalow_2006" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center hover:bg-terracotta transition-colors" aria-label="Telegram">
+              <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M22.05 3.24 2.87 10.7c-1.24.5-1.23 1.2-.23 1.5l4.9 1.53 1.9 5.9c.24.66.4.9.8.9.3 0 .45-.14.65-.33l1.9-1.83 4.05 2.98c.75.4 1.28.2 1.47-.7l2.66-12.5c.27-1.1-.4-1.6-1.17-1.3ZM9.8 14.4l-.9 3.2-1-3.4 9.4-6.9c.3-.2.6.1.35.35Z"/>
+              </svg>
+            </a>
+            <a href="https://instagram.com/@lenalow_2006" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center hover:bg-terracotta transition-colors" aria-label="Instagram">
+              <svg class="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" ry="5"></rect>
+                <circle cx="12" cy="12" r="4"></circle>
+                <circle cx="17.5" cy="6.5" r=".5" fill="currentColor"></circle>
+              </svg>
+            </a>
+            <a href="mailto:likovvana777@gmail.com" class="w-10 h-10 rounded-full bg-cream/10 flex items-center justify-center hover:bg-terracotta transition-colors" aria-label="Email">
+              <i data-lucide="mail" class="w-[18px] h-[18px]"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-cream/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-cream/40">
+        <p>© <span id="current-year">2026</span> Олена Колкова. Усі права захищено.</p>
+        <p>Розробка сайту — <a href="https://lykov.site/" class="hover:text-terracotta transition-colors">Lykov</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       СКРИПТИ (порядок підключення важливий: спочатку бібліотеки, потім main.js)
+  ========================================================================== -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="main.js"></script>
+
+  <!-- Автоматично проставляємо поточний рік у футері -->
+  <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

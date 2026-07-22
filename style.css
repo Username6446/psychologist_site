@@ -1,0 +1,125 @@
+/* ==========================================================================
+   style.css
+   Мінімальні кастомні стилі, яких не вистачає у стандартному Tailwind:
+   - кастомний скролбар
+   - сигнатурний анімований елемент "дихаюче коло"
+   - органічна (не прямокутна) рамка фото психолога
+   - ефект glassmorphism для хедера при скролі
+   - видимі стани фокусу для клавіатурної навігації
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Кастомний скролбар (Webkit-браузери: Chrome, Edge, Safari)
+-------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FDFCF0; /* cream */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A3B8A8; /* moss */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C57B57; /* terracotta */
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #A3B8A8 #FDFCF0;
+}
+
+/* --------------------------------------------------------------------------
+   2. Хедер: плавний перехід у стан "glassmorphism" при скролі.
+   Клас .header-scrolled додається/видаляється через main.js.
+-------------------------------------------------------------------------- */
+#site-header {
+  background-color: transparent;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+#site-header.header-scrolled {
+  background-color: rgba(253, 252, 240, 0.75); /* cream з прозорістю */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 3px rgba(51, 58, 54, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   3. Сигнатурний елемент: "дихаюче коло" за фото психолога.
+   Символізує спокій і глибокий подих — головну ідею терапевтичного простору.
+   М'яка пульсація (масштаб + прозорість) у повільному ритмі, схожому на дихання.
+-------------------------------------------------------------------------- */
+.breathing-circle {
+  position: absolute;
+  inset: -8%;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(163, 184, 168, 0.55) 0%,
+    rgba(197, 123, 87, 0.25) 55%,
+    transparent 75%
+  );
+  filter: blur(20px);
+  animation: breathe 6s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. Органічна рамка для фото — м'які, "неправильні" заокруглення замість
+   строгого прямокутника чи ідеального кола. Додає дизайну живого відчуття.
+-------------------------------------------------------------------------- */
+.organic-frame {
+  border-radius: 48% 52% 55% 45% / 55% 45% 52% 48%;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(51, 58, 54, 0.25);
+  transition: border-radius 0.6s ease;
+}
+
+/* --------------------------------------------------------------------------
+   5. Видимі стани фокусу для клавіатурної навігації (accessibility).
+   Не покладаємось лише на браузерний default outline.
+-------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #C57B57; /* terracotta */
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   6. Повага до налаштування "менше руху" (prefers-reduced-motion).
+   Вимикаємо декоративні анімації для людей, які цього потребують.
+-------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .breathing-circle {
+    animation: none;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
