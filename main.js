@@ -15,7 +15,7 @@
 
 // ВАЖЛИВО: після деплою Worker'а (див. кроки в README.md) вставте сюди його URL.
 // Приклад: "https://psychologist-form.your-subdomain.workers.dev"
-const WORKER_URL = "psychologist-form-handler.likovvana777.workers.dev";
+const WORKER_URL = "https://psychologist-form-handler.likovvana777.workers.dev";
 
 // ============================================================================
 // 1. ІНІЦІАЛІЗАЦІЯ БІБЛІОТЕК
